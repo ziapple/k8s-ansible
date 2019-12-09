@@ -10,5 +10,4 @@ hosts
 logs/
 roles-bk/
 extra-playbooks-bk/
-hosts.ini
 openrc
