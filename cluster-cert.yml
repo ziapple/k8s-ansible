@@ -1,0 +1,16 @@
+---
+
+- hosts: masters
+  become: true
+  roles:
+    - { role: cluster-default }
+    - { role: cluster-path }
+    - { role: cert, tags: cert }
+
+- hosts: kube-cluster
+  gather_facts: false
+  become: true
+  roles:
+    - { role: cluster-default }
+    - { role: cluster-path }
+    # - { role: container-runtime, tags: container-runtime }

@@ -1,0 +1,7 @@
+---
+- hosts: etcds
+  become: true
+  roles:
+   - { role: cluster-default }
+   - { role: cluster-path }
+   - { role: etcd, tags: etcd }

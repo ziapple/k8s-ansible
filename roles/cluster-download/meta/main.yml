@@ -1,0 +1,10 @@
+---
+
+dependencies:
+  - { role: download/package, pkg: "{{ package.kubectl }}" }
+  - { role: download/package, pkg: "{{ package.kubelet }}" }
+  - { role: download/package, pkg: "{{ package.etcd }}" }
+  - { role: download/package, pkg: "{{ package.cni }}" }
+  - { role: download/package, pkg: "{{ package.helm }}" }
+  - { role: download/package, pkg: "{{ package.cfssl }}" }
+  - { role: download/package, pkg: "{{ package.cfssljson }}" }

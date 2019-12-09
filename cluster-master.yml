@@ -1,0 +1,10 @@
+---
+- hosts: masters
+  become: true
+  roles:
+    - { role: cluster-default }
+    - { role: cluster-path }
+    - { role: k8s-kubeconfig, node_role: 'master' }
+    - { role: k8s-setup, node_role: 'master', tags: master-setup }
+    - { role: k8s-addon, addon: "{{ addons.kubedns }}" }
+    - { role: k8s-addon, addon: "{{ addons.kubeproxy }}" }

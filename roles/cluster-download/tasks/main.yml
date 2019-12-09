@@ -1,0 +1,7 @@
+---
+
+- name: Downloading neccessary archive
+  debug:
+    msg: "Downloading neccessary archive"
+  tags:
+    - download
