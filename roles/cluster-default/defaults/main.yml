@@ -26,8 +26,8 @@ cluster_dns_ip: "{{ cluster_subnet }}.10"
 cluster_domain_name: cluster.local
 
 # Kubernetes HA extra variables.
-enable_keepalived: false
-enable_haproxy: false
+enable_keepalived: true
+enable_haproxy: true
 vip_interface: "enp0s8"
 vip_address: 172.16.35.9
 lb_secure_port: 8443
