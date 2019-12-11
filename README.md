@@ -137,13 +137,13 @@ kube-system_kube-haproxy-master_2e5ae1209746cceaa8ff7a25d3899eba
 
 看到如下表示kubelet运行成果，这步很关键，多数时候是因为kubelet运行不成功引起的
 
-![kubelet-run-successful](imags/kubelet-run-successful.png)
+![kubelet-run-successful](images/kubelet-run-successful.png)
 
 node "master" not found 先不用管，因为--node-labels=kubelet.kubernetes.io/master=''里面的master的核心组件还没有起来 
 
 所有运行完之后，kubectl get nodes，查看nodes状态，这时候master为not ready状态
 
-![k8s-core-installed](imags/k8s-core-installed.png)
+![k8s-core-installed](images/k8s-core-installed.png)
 
 coredns为pending状态没关系，是因为cni插件还没装(calico或flannel)，装上就好了
 
@@ -154,5 +154,9 @@ ansible-playbook -i inventory/hosts.ini cluster-nodes.yml
 下载的时候回在每个节点重新download下kubelet，这个很费时，可以直接把master节点的/tmp/kubelet复制过去
 
 
+## 安装k8s-cni
+```sh
+ansible-playbook -i inventory/hosts.ini cluster-cni.yml 
+```
 
 
