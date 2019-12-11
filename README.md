@@ -129,13 +129,8 @@ kube-system_kube-apiserver-master_e26006757f58f6bb353eb69a1fc0c573           kub
 kube-system_kube-controller-manager-master_429bafb765de754f92f0746ea01b0565  kube-system_kube-scheduler-master_77c8fad4cb5614a5503d354951fd0736
 kube-system_kube-haproxy-master_2e5ae1209746cceaa8ff7a25d3899eba
 ```
+** kubelet启动可能会遇到多次失败，主要原因在于/usr/lib/systemd/system/kubelet.service 和 /etc/systemd/system/kubelet.service.d/10-kubelet.conf 没有配置好，尤其是参数没有配置好 **
 
-在 /etc/systemd/system/ 目录中的单元文件的优先级总是高于 /usr/lib/systemd/system/ 目录中的同名单元文件
-systemctl enable supervisord.service，
-就是调用 /lib/systemd/system/supervisord.service文件，使supervisord开机启动
-
-注意：kubelet.conf配置文件中--node-labels=node-role.kubernetes.io/k8s-node=true 这个选项，它的作用只是在 kubectl get node 时 ROLES 栏显示是什么节点；
-     对于master节点需要修改为--node-labels=node-role.kubernetes.io/k8s-master=true，后面这个 node-role.kubernetes.io/master 是 kubeadm 用的，这个 label 会告诉 k8s 调度器当前节点为 master节点；
-　　 如果不想让master节点参与到正常的pod调度，则需要对master进行打污点标签，这样master就不会有pod创建(pod创建时可以进行容忍度设置，这样master还是可以进行pod调度)
+*** 在 /etc/systemd/system/ 目录中的单元文件会和 /usr/lib/systemd/system/ 目录中的同名单元文件进行合并 ***
 
 
