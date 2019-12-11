@@ -1,0 +1,9 @@
+---
+
+- hosts: masters
+  become: true
+  gather_facts: false
+  roles:
+    - { role: cluster-default }
+    - { role: cluster-path }
+    - { role: k8s-cni, when: cni_enable }

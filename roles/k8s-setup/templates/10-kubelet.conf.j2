@@ -7,7 +7,7 @@ Environment="KUBELET_SYSTEM_ARGS=--network-plugin=cni --cni-conf-dir={{ cni_etc_
 {% endif %}
 Environment="KUBELET_CONFIG_ARGS=--config={{ kubelet_config }}"
 {% if node_role == 'master'  %}
-Environment="KUBELET_EXTRA_ARGS=--node-labels=node-role.kubernetes.io/master=''"
+Environment="KUBELET_EXTRA_ARGS=--node-labels=kubelet.kubernetes.io/master=''"
 {% endif %}
 {% if container_runtime != 'docker' and container_runtime != 'nvidia-docker' %}
 Environment="CRI_RUNTIME_ARGS=--container-runtime=remote --container-runtime-endpoint=unix://{{ runtime_sockets['' + container_runtime] }}"

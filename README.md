@@ -90,7 +90,7 @@ kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "syste
 ```sh
 export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgroups=/systemd/system.slice --fail-swap-on=false --cgroup-driver=systemd"
 ```
-!kubelet 安装apiserver、cm、scheduler等这些staticpod，以及不断的去请求apiserver的vip是同步进行的，在没有拉起staticpod之前，会一直报错：
+** kubelet 安装apiserver、cm、scheduler等这些staticpod，以及不断的去请求apiserver的vip是同步进行的，在没有拉起staticpod之前，会一直报错：**
 
 ![kubelet-fail-apiserver](images/kubelet-fail-apiserver.png)
 
@@ -109,7 +109,7 @@ export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgr
 在kubelet启动参数中，增加一下参数，以下参数在ansible已改好，可以直接用
 `--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.1`
 
-！在装master的时候，要把cluster-default/defaults/main.yml下的ha和keepalive打开，kubelet会去找vip，否则会出现找不到apiserver
+** 在装master的时候，要把cluster-default/defaults/main.yml下的ha和keepalive打开，kubelet会去找vip，否则会出现找不到apiserver **
 ```sh
 enable_keepalived: true
 enable_haproxy: true
@@ -121,6 +121,21 @@ vip_address: 172.16.35.9
 
 ![kublet-start-install-components](images/kublet-start-install-components.png)
 
-# v1.16 change extensions/v1beta1 to apps/v1
+** 注意，kubernetes从v1.16版本后Deployment的apiVersion从extensions/v1beta1改成apps/v1 **
+** 如果多次安装，出现证书失败，运行reset-cluster.yml **
+** 安装master的时候，通过/var/log/message查看kubelet日志不够详细，要查看apiserver,cm等组件安装时候的日志，进入/var/log/pods/下查看具体日志，类似这种，我在安装的时候apiserver一直没起来，就是通过查看日志，得知证书的问题导致的 **
+```
+kube-system_kube-apiserver-master_e26006757f58f6bb353eb69a1fc0c573           kube-system_kube-keepalived-master_51e41b396d4d7bb30877543ada243c45
+kube-system_kube-controller-manager-master_429bafb765de754f92f0746ea01b0565  kube-system_kube-scheduler-master_77c8fad4cb5614a5503d354951fd0736
+kube-system_kube-haproxy-master_2e5ae1209746cceaa8ff7a25d3899eba
+```
+
+在 /etc/systemd/system/ 目录中的单元文件的优先级总是高于 /usr/lib/systemd/system/ 目录中的同名单元文件
+systemctl enable supervisord.service，
+就是调用 /lib/systemd/system/supervisord.service文件，使supervisord开机启动
+
+注意：kubelet.conf配置文件中--node-labels=node-role.kubernetes.io/k8s-node=true 这个选项，它的作用只是在 kubectl get node 时 ROLES 栏显示是什么节点；
+     对于master节点需要修改为--node-labels=node-role.kubernetes.io/k8s-master=true，后面这个 node-role.kubernetes.io/master 是 kubeadm 用的，这个 label 会告诉 k8s 调度器当前节点为 master节点；
+　　 如果不想让master节点参与到正常的pod调度，则需要对master进行打污点标签，这样master就不会有pod创建(pod创建时可以进行容忍度设置，这样master还是可以进行pod调度)
 
 

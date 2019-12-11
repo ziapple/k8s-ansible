@@ -1,0 +1,9 @@
+---
+
+- hosts: nodes
+  become: true
+  roles:
+    - { role: cluster-default }
+    - { role: cluster-path }
+    - { role: k8s-kubeconfig, node_role: 'node' }
+    - { role: k8s-setup, node_role: 'node', tags: node-setup }

@@ -13,4 +13,4 @@
   roles:
     - { role: cluster-default }
     - { role: cluster-path }
-    # - { role: container-runtime, tags: container-runtime }
+    - { role: container-runtime, tags: container-runtime }
