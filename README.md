@@ -129,8 +129,30 @@ kube-system_kube-apiserver-master_e26006757f58f6bb353eb69a1fc0c573           kub
 kube-system_kube-controller-manager-master_429bafb765de754f92f0746ea01b0565  kube-system_kube-scheduler-master_77c8fad4cb5614a5503d354951fd0736
 kube-system_kube-haproxy-master_2e5ae1209746cceaa8ff7a25d3899eba
 ```
-** kubelet启动可能会遇到多次失败，主要原因在于/usr/lib/systemd/system/kubelet.service 和 /etc/systemd/system/kubelet.service.d/10-kubelet.conf 没有配置好，尤其是参数没有配置好 **
+** kubelet启动可能会遇到多次失败，主要原因在于/usr/lib/systemd/system/kubelet.service 和 /etc/systemd/system/kubelet.service.d/10-kubelet.conf 没有配置好，而且每次ansible不会自动删除 **
 
 *** 在 /etc/systemd/system/ 目录中的单元文件会和 /usr/lib/systemd/system/ 目录中的同名单元文件进行合并 ***
+
+*** 需要注意，k8s-setup/templates/kubelet-config.yml.j2有个重要参数 cgroupDriver，默认是cgroupfs，有的docker是systemd ***
+
+看到如下表示kubelet运行成果，这步很关键，多数时候是因为kubelet运行不成功引起的
+
+![kubelet-run-successful](imags/kubelet-run-successful.png)
+
+node "master" not found 先不用管，因为--node-labels=kubelet.kubernetes.io/master=''里面的master的核心组件还没有起来 
+
+所有运行完之后，kubectl get nodes，查看nodes状态，这时候master为not ready状态
+
+![k8s-core-installed](imags/k8s-core-installed.png)
+
+coredns为pending状态没关系，是因为cni插件还没装(calico或flannel)，装上就好了
+
+## 安装nodes节点
+```sh
+ansible-playbook -i inventory/hosts.ini cluster-nodes.yml 
+```
+下载的时候回在每个节点重新download下kubelet，这个很费时，可以直接把master节点的/tmp/kubelet复制过去
+
+
 
 

@@ -161,7 +161,7 @@ spec:
     matchLabels:
       k8s-app: calico-typha
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-typha
@@ -215,7 +215,7 @@ spec:
           periodSeconds: 10
 ---
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: calico-node
   namespace: kube-system
