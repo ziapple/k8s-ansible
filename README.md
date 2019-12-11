@@ -75,7 +75,7 @@ curl -s https://192.168.56.102:2379/v2/keys -k --cert /etc/kubernetes/pki/etcd/e
 ```
 
 ## 安装cluster-master
-安装master会安装schedler,controller-manager,apiserver,cni等核心组件
+!关键的一步，安装master会安装schedler,controller-manager,apiserver,cni等核心组件
 ```sh
 ansible-playbook -i inventory/hosts.ini cluster-master.yml 
 ```
@@ -108,5 +108,19 @@ export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgr
 
 在kubelet启动参数中，增加一下参数，以下参数在ansible已改好，可以直接用
 `--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.1`
+
+！在装master的时候，要把cluster-default/defaults/main.yml下的ha和keepalive打开，kubelet会去找vip，否则会出现找不到apiserver
+```sh
+enable_keepalived: true
+enable_haproxy: true
+vip_interface: "enp0s8"
+vip_address: 172.16.35.9
+```
+
+在安装过程中，可以随时查看docker拉取镜像的情况，需要等待一些时间
+
+![kublet-start-install-components](images/kublet-start-install-components.png)
+
+# v1.16 change extensions/v1beta1 to apps/v1
 
 
