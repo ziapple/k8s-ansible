@@ -109,7 +109,7 @@ export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgr
 在kubelet启动参数中，增加一下参数，以下参数在ansible已改好，可以直接用
 `--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.1`
 
-** 在装master的时候，要把cluster-default/defaults/main.yml下的ha和keepalive打开，kubelet会去找vip，否则会出现找不到apiserver **
+**在装master的时候，要把cluster-default/defaults/main.yml下的ha和keepalive打开，kubelet会去找vip，否则会出现找不到apiserver**
 ```sh
 enable_keepalived: true
 enable_haproxy: true
@@ -121,9 +121,9 @@ vip_address: 172.16.35.9
 
 ![kublet-start-install-components](images/kublet-start-install-components.png)
 
-** 注意，kubernetes从v1.16版本后Deployment的apiVersion从extensions/v1beta1改成apps/v1 **
-** 如果多次安装，出现证书失败，运行reset-cluster.yml **
-** 安装master的时候，通过/var/log/message查看kubelet日志不够详细，要查看apiserver,cm等组件安装时候的日志，进入/var/log/pods/下查看具体日志，类似这种，我在安装的时候apiserver一直没起来，就是通过查看日志，得知证书的问题导致的 **
+**注意，kubernetes从v1.16版本后Deployment的apiVersion从extensions/v1beta1改成apps/v1**
+**如果多次安装，出现证书失败，运行reset-cluster.yml**
+**安装master的时候，通过/var/log/message查看kubelet日志不够详细，要查看apiserver,cm等组件安装时候的日志，进入/var/log/pods/下查看具体日志，类似这种，我在安装的时候apiserver一直没起来，就是通过查看日志，得知证书的问题导致的**
 ```
 kube-system_kube-apiserver-master_e26006757f58f6bb353eb69a1fc0c573           kube-system_kube-keepalived-master_51e41b396d4d7bb30877543ada243c45
 kube-system_kube-controller-manager-master_429bafb765de754f92f0746ea01b0565  kube-system_kube-scheduler-master_77c8fad4cb5614a5503d354951fd0736
@@ -131,9 +131,9 @@ kube-system_kube-haproxy-master_2e5ae1209746cceaa8ff7a25d3899eba
 ```
 ** kubelet启动可能会遇到多次失败，主要原因在于/usr/lib/systemd/system/kubelet.service 和 /etc/systemd/system/kubelet.service.d/10-kubelet.conf 没有配置好，而且每次ansible不会自动删除 **
 
-*** 在 /etc/systemd/system/ 目录中的单元文件会和 /usr/lib/systemd/system/ 目录中的同名单元文件进行合并 ***
+***在 /etc/systemd/system/ 目录中的单元文件会和 /usr/lib/systemd/system/ 目录中的同名单元文件进行合并***
 
-*** 需要注意，k8s-setup/templates/kubelet-config.yml.j2有个重要参数 cgroupDriver，默认是cgroupfs，有的docker是systemd ***
+***需要注意，k8s-setup/templates/kubelet-config.yml.j2有个重要参数 cgroupDriver，默认是cgroupfs，有的docker是systemd***
 
 看到如下表示kubelet运行成果，这步很关键，多数时候是因为kubelet运行不成功引起的
 
