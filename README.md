@@ -90,3 +90,23 @@ kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "syste
 ```sh
 export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgroups=/systemd/system.slice --fail-swap-on=false --cgroup-driver=systemd"
 ```
+!kubelet 安装apiserver、cm、scheduler等这些staticpod，以及不断的去请求apiserver的vip是同步进行的，在没有拉起staticpod之前，会一直报错：
+
+![kubelet-fail-apiserver](images/kubelet-fail-apiserver.png)
+
+等到拉起staticpod之后就没问题了，但我发现kubelet一直是这个状态，apiserver这些组件的imaeg也都改成国内镜像了，通过在cluster-default/defauts/main.yml里面设置
+
+`kube_image_repo: registry.cn-hangzhou.aliyuncs.com/google_containers`
+
+查看`vim /etc/kubernetes/manifests/kube-apiserver.yml `的kube-apiserver.yml文件
+
+`image: registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver-amd64:v1.16.0`
+
+但还是无法正常拉取镜像，仔细观察/var/log/message里面的日志，发现pause无法拉取
+
+![kubelet-fail-pulled-image](images/kubelet-fail-pulled-image.png)
+
+在kubelet启动参数中，增加一下参数，以下参数在ansible已改好，可以直接用
+`--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.1`
+
+

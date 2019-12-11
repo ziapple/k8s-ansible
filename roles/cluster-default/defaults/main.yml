@@ -47,7 +47,7 @@ encryption_token: iTNwwjHuxNI9+8niwh8GJKT5NQiHFqcOTrrhzYfhAvk=
 
 # Kubernetes extra addons
 enable_ingress: false
-enable_dashboard: true
+enable_dashboard: false
 enable_logging: false
 enable_monitoring: false
 enable_metric_server: false
