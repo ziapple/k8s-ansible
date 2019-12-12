@@ -29,7 +29,7 @@ cluster_domain_name: cluster.local
 enable_keepalived: true
 enable_haproxy: true
 vip_interface: "enp0s8"
-vip_address: 172.16.35.9
+vip_address: 192.168.56.100
 lb_secure_port: 8443
 lb_api_url: "https://{{ vip_address }}:{{ lb_secure_port }}"
 

@@ -9,6 +9,10 @@ nat模式下虚拟机之间网络无法访问，一定要选择bridge的ip，etc
 
 - master 192.168.56.102
 - node1 192.168.56.103
+- vip_address: 192.168.56.100
+
+***注意vip要设置成同一个网段，否则会找不到apiserver***
+
 ```sh
 [etcds]
 master
@@ -90,7 +94,7 @@ kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "syste
 ```sh
 export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgroups=/systemd/system.slice --fail-swap-on=false --cgroup-driver=systemd"
 ```
-** kubelet 安装apiserver、cm、scheduler等这些staticpod，以及不断的去请求apiserver的vip是同步进行的，在没有拉起staticpod之前，会一直报错：**
+**kubelet 安装apiserver、cm、scheduler等这些staticpod，以及不断的去请求apiserver的vip是同步进行的，在没有拉起staticpod之前，会一直报错**
 
 ![kubelet-fail-apiserver](images/kubelet-fail-apiserver.png)
 
@@ -114,7 +118,7 @@ export KUBELET_EXTRA_ARGS="--runtime-cgroups=/systemd/system.slice --kubelet-cgr
 enable_keepalived: true
 enable_haproxy: true
 vip_interface: "enp0s8"
-vip_address: 172.16.35.9
+vip_address: 192.168.56.100
 ```
 
 在安装过程中，可以随时查看docker拉取镜像的情况，需要等待一些时间
