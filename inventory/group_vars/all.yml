@@ -12,8 +12,8 @@ cni_enable: true
 container_network: calico
 
 # Kubernetes HA extra variables.
-vip_interface: ""
-vip_address: 172.16.35.9
+vip_interface: "enp0s8"
+vip_address: 192.168.56.100
 
 # Kubernetes extra addons
 enable_ingress: false
