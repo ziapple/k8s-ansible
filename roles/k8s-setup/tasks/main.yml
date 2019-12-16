@@ -21,5 +21,9 @@
     - "10252"
     - "10251"
 
-- when: init|default(true)
+- when: node_role == 'master' and init|default(true)
+  include_tasks: setup-resources.yml
+
+# 初始化node的bootstrap节点
+- when: node_role == 'node' and init|default(true)
   include_tasks: setup-resources.yml

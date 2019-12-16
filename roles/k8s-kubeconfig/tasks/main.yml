@@ -12,6 +12,10 @@
 - when: node_role == 'master'
   include_tasks: create-configs.yml
 
+# 设置node的bootstrap
+- when: node_role == 'node'
+  include_tasks: create-configs.yml
+
 - name: Copy bootstrap kubeconfig to nodes
   when: node_role == 'node'
   vars:
