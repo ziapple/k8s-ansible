@@ -3,35 +3,42 @@
 config:
   cluster_name: kubernetes
   contexts:
-    - name: kubernetes-admin
-      context: kubernetes-admin@kubernetes
-      ca: "{{ ca }}"
-      cert: "{{ admin }}"
-      cert_key: "{{ admin_key }}"
-      path: "{{ admin_kubeconfig }}"
-    - name: system:kube-controller-manager
-      context: system:kube-controller-manager@kubernetes
-      ca: "{{ ca }}"
-      cert: "{{ controller_manager }}"
-      cert_key: "{{ controller_manager_key }}"
-      path: "{{ controller_manager_kubeconfig }}"
-    - name: system:kube-scheduler
-      context: system:kube-scheduler@kubernetes
-      ca: "{{ ca }}"
-      cert: "{{ scheduler }}"
-      cert_key: "{{ scheduler_key }}"
-      path: "{{ scheduler_kubeconfig }}"
-    - name: "system:node:{{ ansible_hostname }}"
-      context: "system:node:{{ ansible_hostname }}@kubernetes"
-      ca: "{{ ca }}"
-      cert: "{{ kubelet }}"
-      cert_key: "{{ kubelet_key }}"
-      path: "{{ kubelet_kubeconfig }}"
-    - name: kubelet-bootstrap
-      context: default
-      ca: "{{ ca }}"
-      token: "{{ bootstrap_token }}"
-      path: "{{ bootstrap_kubeconfig }}"
+    master:
+      - name: kubernetes-admin
+        context: kubernetes-admin@kubernetes
+        ca: "{{ ca }}"
+        cert: "{{ admin }}"
+        cert_key: "{{ admin_key }}"
+        path: "{{ admin_kubeconfig }}"
+      - name: system:kube-controller-manager
+        context: system:kube-controller-manager@kubernetes
+        ca: "{{ ca }}"
+        cert: "{{ controller_manager }}"
+        cert_key: "{{ controller_manager_key }}"
+        path: "{{ controller_manager_kubeconfig }}"
+      - name: system:kube-scheduler
+        context: system:kube-scheduler@kubernetes
+        ca: "{{ ca }}"
+        cert: "{{ scheduler }}"
+        cert_key: "{{ scheduler_key }}"
+        path: "{{ scheduler_kubeconfig }}"
+      - name: "system:node:{{ ansible_hostname }}"
+        context: "system:node:{{ ansible_hostname }}@kubernetes"
+        ca: "{{ ca }}"
+        cert: "{{ kubelet }}"
+        cert_key: "{{ kubelet_key }}"
+        path: "{{ kubelet_kubeconfig }}"
+      - name: kubelet-bootstrap
+        context: default
+        ca: "{{ ca }}"
+        token: "{{ bootstrap_token }}"
+        path: "{{ bootstrap_kubeconfig }}"
+      node:
+        - name: kubelet-bootstrap
+          context: default
+          ca: "{{ ca }}"
+          token: "{{ bootstrap_token }}"
+          path: "{{ bootstrap_kubeconfig }}"
 copy_keys:
   node:
     - "{{ ca }}"

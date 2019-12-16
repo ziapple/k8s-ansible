@@ -3,7 +3,7 @@
   register: bootstrap_file
 
 - name: 配置bootstrap
-  script: files/bootstrap.sh {{ KUBE_APISERVER }}
+  script: files/bootstrap.sh {{ vip_address }}
   args:
    executable: bash
   when: not bootstrap_file.stat.exists

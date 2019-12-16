@@ -3,7 +3,7 @@
 - name: Check Kubernetes config already exists
   stat:
     path: "{{ item.path }}"
-  with_items: "{{ config.contexts }}"
+  with_items: "{{ config.contexts.node }}"
   register: check_config_files
 
 - name: Set Kubernetes cluster into config files
