@@ -170,6 +170,9 @@ metadata:
     k8s-app: calico-typha
 spec:
   replicas: 0
+  selector:
+    matchLabels:
+      k8s-app: calico-typha
   template:
     metadata:
       labels:
