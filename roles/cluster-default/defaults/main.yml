@@ -13,7 +13,7 @@ container_runtime: docker
 # Container network,
 # Supported: calico, flannel.
 cni_enable: true
-container_network: flannel
+container_network: calico
 cni_iface: "enp0s8"
 
 # Kubernetes cluster network
