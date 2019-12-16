@@ -1,0 +1,9 @@
+---
+
+- hosts: nodes
+  become: true
+  roles:
+    - { role: cluster-default }
+    - { role: cluster-path }
+    - { role: k8s-addon, addon: "{{ addons.kubedns }}" }
+    - { role: k8s-addon, addon: "{{ addons.kubeproxy }}" }
