@@ -163,4 +163,14 @@ ansible-playbook -i inventory/hosts.ini cluster-nodes.yml
 ansible-playbook -i inventory/hosts.ini cluster-cni.yml 
 ```
 
+## 安装addon
+```sh
+ansible-playbook -i inventory/hosts.ini cluster-cni.yml 
+```
+cluster-proportional-autoscaler-amd64:1.4.0国内无法下载，阿里云上也没有此镜像，通过以下方式可以
+```sh
+curl -s https://zhangguanzhang.github.io/bash/pull.sh | bash -s -- gcr.io/google_containers/cluster-proportional-autoscaler-amd64:1.4.0
+zhangguanzhang/gcr.io.google_containers.cluster-proportional-autoscaler-amd64:1.4.0
+```
+
 
