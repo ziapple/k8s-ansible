@@ -33,12 +33,12 @@ config:
         ca: "{{ ca }}"
         token: "{{ bootstrap_token }}"
         path: "{{ bootstrap_kubeconfig }}"
-      node:
-        - name: kubelet-bootstrap
-          context: default
-          ca: "{{ ca }}"
-          token: "{{ bootstrap_token }}"
-          path: "{{ bootstrap_kubeconfig }}"
+    node:
+      - name: kubelet-bootstrap
+        context: default
+        ca: "{{ ca }}"
+        token: "{{ bootstrap_token }}"
+        path: "{{ bootstrap_kubeconfig }}"
 copy_keys:
   node:
     - "{{ ca }}"
