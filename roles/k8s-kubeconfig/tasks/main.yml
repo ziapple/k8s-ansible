@@ -10,7 +10,7 @@
     name: common/copy-files
 
 - when: node_role == 'master'
-  include_tasks: create-configs-master.yml
+  include_tasks: create-configs.yml
 
 # 拷贝bootstrap的conf文件到node节点
 - name: Copy bootstrap kubeconfig to nodes
@@ -20,7 +20,3 @@
       - "{{ bootstrap_kubeconfig }}"
   import_role:
     name: common/copy-files
-
-# 设置node的bootstrap
-- when: node_role == 'node'
-  include_tasks: create-configs-node.yml
